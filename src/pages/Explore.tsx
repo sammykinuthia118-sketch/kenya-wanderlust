@@ -3,9 +3,11 @@ import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import DestinationCard from "@/components/DestinationCard";
-import { destinations, DestinationCategory, categoryLabels } from "@/data/destinations";
+import { useDestinations, categoryLabels } from "@/hooks/useDestinations";
 
-const filters: { key: DestinationCategory | "all"; label: string }[] = [
+type FilterKey = "all" | "safari" | "beach" | "cultural" | "adventure";
+
+const filters: { key: FilterKey; label: string }[] = [
   { key: "all", label: "All" },
   { key: "safari", label: "Wildlife Safari" },
   { key: "beach", label: "Beach" },
@@ -14,8 +16,9 @@ const filters: { key: DestinationCategory | "all"; label: string }[] = [
 ];
 
 const Explore = () => {
-  const [activeFilter, setActiveFilter] = useState<DestinationCategory | "all">("all");
+  const [activeFilter, setActiveFilter] = useState<FilterKey>("all");
   const [search, setSearch] = useState("");
+  const { data: destinations = [], isLoading } = useDestinations();
 
   const filtered = destinations.filter((d) => {
     const matchesCategory = activeFilter === "all" || d.category === activeFilter;
@@ -63,13 +66,19 @@ const Explore = () => {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((dest, i) => (
-            <DestinationCard key={dest.id} destination={dest} index={i} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1,2,3,4,5,6].map(i => <div key={i} className="h-80 bg-muted animate-pulse rounded-xl" />)}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filtered.map((dest, i) => (
+              <DestinationCard key={dest.id} destination={dest} index={i} />
+            ))}
+          </div>
+        )}
 
-        {filtered.length === 0 && (
+        {!isLoading && filtered.length === 0 && (
           <div className="text-center py-20 text-muted-foreground">
             <p className="text-lg">No destinations found. Try a different search or filter.</p>
           </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { BarChart3, Users, Calendar, Star, Trash2, MapPin, FileText, LayoutDashboard, Plus, Pencil, ToggleLeft, ToggleRight } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { destinations as localDestinations } from "@/data/destinations";
+
 import { toast } from "sonner";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from "recharts";
 
@@ -50,7 +51,7 @@ const Admin = () => {
   const fetchData = async () => {
     const [b, r, p, d, c] = await Promise.all([
       supabase.from("bookings").select("*").order("created_at", { ascending: false }),
-      supabase.from("reviews").select("*, profiles(display_name)").order("created_at", { ascending: false }),
+      supabase.from("reviews").select("*").order("created_at", { ascending: false }),
       supabase.from("profiles").select("*").order("created_at", { ascending: false }),
       supabase.from("destinations").select("*").order("created_at", { ascending: false }),
       supabase.from("site_content").select("*").order("key"),
@@ -133,7 +134,7 @@ const Admin = () => {
   if (loading) return null;
   if (!user || !isAdmin) return <Navigate to="/" replace />;
 
-  const getDestName = (id: string) => localDestinations.find((d) => d.id === id)?.name || id;
+  const getDestName = (id: string) => dbDestinations.find((d) => d.id === id)?.name || id;
 
   // Analytics data
   const bookingsByMonth = bookings.reduce((acc: any[], b) => {
@@ -318,7 +319,7 @@ const Admin = () => {
                   <div key={r.id} className="bg-card border border-border rounded-xl p-5 flex items-start gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="font-medium text-card-foreground text-sm">{(r.profiles as any)?.display_name || "User"}</span>
+                        <span className="font-medium text-card-foreground text-sm">User</span>
                         <span className="text-xs text-muted-foreground">{getDestName(r.destination_id)}</span>
                       </div>
                       <div className="flex gap-0.5 mb-1">

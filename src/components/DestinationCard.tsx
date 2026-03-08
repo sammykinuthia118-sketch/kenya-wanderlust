@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { Star, MapPin } from "lucide-react";
-import { Destination, categoryLabels, categoryColors } from "@/data/destinations";
+import { DBDestination, categoryLabels, categoryColors, resolveImage } from "@/hooks/useDestinations";
 import { Badge } from "./ui/badge";
 
 interface DestinationCardProps {
-  destination: Destination;
+  destination: DBDestination;
   index?: number;
 }
 
@@ -17,13 +17,13 @@ const DestinationCard = ({ destination, index = 0 }: DestinationCardProps) => {
     >
       <div className="relative h-56 overflow-hidden">
         <img
-          src={destination.image}
+          src={resolveImage(destination.image_url)}
           alt={destination.name}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
         />
         <div className="absolute top-3 left-3">
-          <Badge className={`${categoryColors[destination.category]} text-xs font-medium`}>
-            {categoryLabels[destination.category]}
+          <Badge className={`${categoryColors[destination.category] || ""} text-xs font-medium`}>
+            {categoryLabels[destination.category] || destination.category}
           </Badge>
         </div>
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-foreground/60 to-transparent h-20" />
@@ -39,13 +39,16 @@ const DestinationCard = ({ destination, index = 0 }: DestinationCardProps) => {
         <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{destination.tagline}</p>
         <div className="flex items-center justify-between mt-4">
           <div className="flex items-center gap-1">
-            <Star className="h-4 w-4 fill-savanna text-savanna" />
-            <span className="text-sm font-semibold text-card-foreground">{destination.rating}</span>
-            <span className="text-xs text-muted-foreground">({destination.reviewCount})</span>
+            {destination.is_featured && (
+              <>
+                <Star className="h-4 w-4 fill-savanna text-savanna" />
+                <span className="text-xs text-muted-foreground">Featured</span>
+              </>
+            )}
           </div>
           <div className="text-sm">
             <span className="text-muted-foreground">from </span>
-            <span className="font-bold text-primary">${destination.priceFrom}</span>
+            <span className="font-bold text-primary">${destination.price_from}</span>
           </div>
         </div>
       </div>

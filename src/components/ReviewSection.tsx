@@ -41,7 +41,7 @@ const ReviewSection = ({ destinationId }: { destinationId: string }) => {
   const fetchReviews = async () => {
     const { data } = await supabase
       .from("reviews")
-      .select("*, profiles(display_name)")
+      .select("*, profiles!reviews_user_id_profiles_fkey(display_name)")
       .eq("destination_id", destinationId)
       .order("created_at", { ascending: false });
     if (data) setReviews(data as any);
