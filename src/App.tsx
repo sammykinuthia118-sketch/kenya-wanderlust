@@ -14,6 +14,7 @@ import TripPlanner from "./pages/TripPlanner";
 import Booking from "./pages/Booking";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
+import Install from "./pages/Install";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/booking" element={<Booking />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/install" element={<Install />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
