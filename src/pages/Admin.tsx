@@ -319,7 +319,7 @@ const Admin = () => {
                   <div key={r.id} className="bg-card border border-border rounded-xl p-5 flex items-start gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="font-medium text-card-foreground text-sm">{(r.profiles as any)?.display_name || "User"}</span>
+                        <span className="font-medium text-card-foreground text-sm">User</span>
                         <span className="text-xs text-muted-foreground">{getDestName(r.destination_id)}</span>
                       </div>
                       <div className="flex gap-0.5 mb-1">
