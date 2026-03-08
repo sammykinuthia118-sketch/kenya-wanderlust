@@ -3,9 +3,12 @@ import { ArrowLeft, Star, MapPin, Calendar, DollarSign, Heart, Check } from "luc
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { destinations, categoryLabels, categoryColors } from "@/data/destinations";
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { toast } from "sonner";
 import ReviewSection from "@/components/ReviewSection";
+import WeatherWidget from "@/components/WeatherWidget";
+
+const DestinationMap = lazy(() => import("@/components/DestinationMap"));
 
 const DestinationDetail = () => {
   const { slug } = useParams();
@@ -102,6 +105,19 @@ const DestinationDetail = () => {
           </div>
 
           <div className="space-y-6">
+            {/* Map */}
+            <Suspense fallback={<div className="h-[300px] bg-muted rounded-xl animate-pulse" />}>
+              <DestinationMap
+                lat={destination.coordinates.lat}
+                lng={destination.coordinates.lng}
+                name={destination.name}
+                location={destination.location}
+              />
+            </Suspense>
+
+            {/* Weather */}
+            <WeatherWidget lat={destination.coordinates.lat} lng={destination.coordinates.lng} />
+
             <div className="bg-card border border-border rounded-xl p-6">
               <h3 className="font-display text-lg font-bold text-card-foreground mb-4">Travel Tips</h3>
               <ul className="space-y-3">
