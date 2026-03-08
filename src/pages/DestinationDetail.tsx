@@ -3,10 +3,11 @@ import { ArrowLeft, Star, MapPin, Calendar, DollarSign, Heart, Check } from "luc
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useDestinationBySlug, categoryLabels, categoryColors, resolveImage } from "@/hooks/useDestinations";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense, lazy } from "react";
 import { toast } from "sonner";
 import ReviewSection from "@/components/ReviewSection";
 import WeatherWidget from "@/components/WeatherWidget";
+import DestinationMap from "@/components/DestinationMap";
 
 const DestinationDetail = () => {
   const { slug } = useParams();
