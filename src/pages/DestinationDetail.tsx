@@ -110,14 +110,12 @@ const DestinationDetail = () => {
 
           <div className="space-y-6">
             {/* Map */}
-            <Suspense fallback={<div className="h-[300px] bg-muted rounded-xl animate-pulse" />}>
-              <DestinationMap
-                lat={destination.lat}
-                lng={destination.lng}
-                name={destination.name}
-                location={destination.location}
-              />
-            </Suspense>
+            <DestinationMap
+              lat={destination.lat}
+              lng={destination.lng}
+              name={destination.name}
+              location={destination.location}
+            />
 
             {/* Weather */}
             <WeatherWidget lat={destination.lat} lng={destination.lng} />
