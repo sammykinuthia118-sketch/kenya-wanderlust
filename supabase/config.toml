@@ -1,0 +1,4 @@
+project_id = "vfodhtxjbvtzrokvfamq"
+
+[functions.ai-travel-assistant]
+verify_jwt = false

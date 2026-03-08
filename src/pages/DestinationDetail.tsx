@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { destinations, categoryLabels, categoryColors } from "@/data/destinations";
 import { useState } from "react";
 import { toast } from "sonner";
+import ReviewSection from "@/components/ReviewSection";
 
 const DestinationDetail = () => {
   const { slug } = useParams();
@@ -33,11 +34,7 @@ const DestinationDetail = () => {
     <div className="min-h-screen pt-16">
       {/* Hero Image */}
       <div className="relative h-[50vh] md:h-[60vh]">
-        <img
-          src={destination.image}
-          alt={destination.name}
-          className="w-full h-full object-cover"
-        />
+        <img src={destination.image} alt={destination.name} className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
           <div className="container mx-auto">
@@ -99,6 +96,9 @@ const DestinationDetail = () => {
                 ))}
               </div>
             </div>
+
+            {/* Reviews Section */}
+            <ReviewSection destinationId={destination.id} />
           </div>
 
           <div className="space-y-6">
