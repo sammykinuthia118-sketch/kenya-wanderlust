@@ -51,7 +51,7 @@ const Admin = () => {
   const fetchData = async () => {
     const [b, r, p, d, c] = await Promise.all([
       supabase.from("bookings").select("*").order("created_at", { ascending: false }),
-      supabase.from("reviews").select("*, profiles(display_name)").order("created_at", { ascending: false }),
+      supabase.from("reviews").select("*").order("created_at", { ascending: false }),
       supabase.from("profiles").select("*").order("created_at", { ascending: false }),
       supabase.from("destinations").select("*").order("created_at", { ascending: false }),
       supabase.from("site_content").select("*").order("key"),
