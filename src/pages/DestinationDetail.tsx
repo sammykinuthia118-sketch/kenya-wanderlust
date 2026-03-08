@@ -3,12 +3,11 @@ import { ArrowLeft, Star, MapPin, Calendar, DollarSign, Heart, Check } from "luc
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useDestinationBySlug, categoryLabels, categoryColors, resolveImage } from "@/hooks/useDestinations";
-import { useState, lazy, Suspense } from "react";
+import { useState, useEffect, Suspense, lazy } from "react";
 import { toast } from "sonner";
 import ReviewSection from "@/components/ReviewSection";
 import WeatherWidget from "@/components/WeatherWidget";
-
-const DestinationMap = lazy(() => import("@/components/DestinationMap"));
+import DestinationMap from "@/components/DestinationMap";
 
 const DestinationDetail = () => {
   const { slug } = useParams();
@@ -111,14 +110,12 @@ const DestinationDetail = () => {
 
           <div className="space-y-6">
             {/* Map */}
-            <Suspense fallback={<div className="h-[300px] bg-muted rounded-xl animate-pulse" />}>
-              <DestinationMap
-                lat={destination.lat}
-                lng={destination.lng}
-                name={destination.name}
-                location={destination.location}
-              />
-            </Suspense>
+            <DestinationMap
+              lat={destination.lat}
+              lng={destination.lng}
+              name={destination.name}
+              location={destination.location}
+            />
 
             {/* Weather */}
             <WeatherWidget lat={destination.lat} lng={destination.lng} />
