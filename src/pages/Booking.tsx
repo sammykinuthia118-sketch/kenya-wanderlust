@@ -4,7 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { destinations } from "@/data/destinations";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 
 const tourTypes = [
   { value: "safari", label: "Safari Tour", multiplier: 1.5 },
@@ -14,6 +17,7 @@ const tourTypes = [
 ];
 
 const Booking = () => {
+  const { user } = useAuth();
   const [destinationId, setDestinationId] = useState("");
   const [tourType, setTourType] = useState("");
   const [date, setDate] = useState("");
@@ -21,6 +25,7 @@ const Booking = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [booked, setBooked] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const dest = destinations.find((d) => d.id === destinationId);
   const tour = tourTypes.find((t) => t.value === tourType);
@@ -28,13 +33,35 @@ const Booking = () => {
   const basePrice = dest?.priceFrom || 0;
   const totalPrice = Math.round(basePrice * (tour?.multiplier || 1) * numTourists);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!destinationId || !tourType || !date || !name || !email) {
       toast.error("Please fill in all fields");
       return;
     }
+
+    setSubmitting(true);
+
+    if (user) {
+      const { error } = await supabase.from("bookings").insert({
+        user_id: user.id,
+        destination_id: destinationId,
+        tour_type: tourType,
+        booking_date: date,
+        num_tourists: numTourists,
+        total_price: totalPrice,
+        full_name: name,
+        email,
+      });
+      if (error) {
+        toast.error(error.message);
+        setSubmitting(false);
+        return;
+      }
+    }
+
     setBooked(true);
+    setSubmitting(false);
     toast.success("Booking confirmed! 🎉");
   };
 
@@ -74,6 +101,14 @@ const Booking = () => {
             Reserve your unforgettable Kenyan experience today.
           </p>
         </div>
+
+        {!user && (
+          <div className="bg-secondary border border-border rounded-xl p-4 mb-6 text-center">
+            <p className="text-sm text-muted-foreground">
+              <Link to="/auth" className="text-primary font-medium hover:underline">Sign in</Link> to save your booking to your account.
+            </p>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="bg-card border border-border rounded-xl p-6 md:p-8 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -145,8 +180,8 @@ const Booking = () => {
             </div>
           )}
 
-          <Button type="submit" size="lg" className="w-full bg-gradient-safari h-12 text-lg">
-            Confirm Booking
+          <Button type="submit" size="lg" className="w-full bg-gradient-safari h-12 text-lg" disabled={submitting}>
+            {submitting ? "Processing..." : "Confirm Booking"}
           </Button>
         </form>
       </div>
