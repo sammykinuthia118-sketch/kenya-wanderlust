@@ -59,6 +59,69 @@ export type Database = {
         }
         Relationships: []
       }
+      destinations: {
+        Row: {
+          activities: string[]
+          best_time: string
+          category: string
+          created_at: string
+          description: string
+          id: string
+          image_url: string | null
+          is_active: boolean
+          is_featured: boolean
+          lat: number
+          lng: number
+          location: string
+          name: string
+          price_from: number
+          slug: string
+          tagline: string
+          travel_tips: string[]
+          updated_at: string
+        }
+        Insert: {
+          activities?: string[]
+          best_time?: string
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          is_featured?: boolean
+          lat?: number
+          lng?: number
+          location?: string
+          name: string
+          price_from?: number
+          slug: string
+          tagline?: string
+          travel_tips?: string[]
+          updated_at?: string
+        }
+        Update: {
+          activities?: string[]
+          best_time?: string
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          is_featured?: boolean
+          lat?: number
+          lng?: number
+          location?: string
+          name?: string
+          price_from?: number
+          slug?: string
+          tagline?: string
+          travel_tips?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -119,6 +182,39 @@ export type Database = {
           title?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      site_content: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          image_url: string | null
+          is_active: boolean
+          key: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          key: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          key?: string
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
