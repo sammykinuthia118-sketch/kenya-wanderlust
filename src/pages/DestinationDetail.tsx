@@ -105,6 +105,19 @@ const DestinationDetail = () => {
           </div>
 
           <div className="space-y-6">
+            {/* Map */}
+            <Suspense fallback={<div className="h-[300px] bg-muted rounded-xl animate-pulse" />}>
+              <DestinationMap
+                lat={destination.coordinates.lat}
+                lng={destination.coordinates.lng}
+                name={destination.name}
+                location={destination.location}
+              />
+            </Suspense>
+
+            {/* Weather */}
+            <WeatherWidget lat={destination.coordinates.lat} lng={destination.coordinates.lng} />
+
             <div className="bg-card border border-border rounded-xl p-6">
               <h3 className="font-display text-lg font-bold text-card-foreground mb-4">Travel Tips</h3>
               <ul className="space-y-3">
