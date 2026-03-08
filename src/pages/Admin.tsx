@@ -134,7 +134,7 @@ const Admin = () => {
   if (loading) return null;
   if (!user || !isAdmin) return <Navigate to="/" replace />;
 
-  const getDestName = (id: string) => localDestinations.find((d) => d.id === id)?.name || id;
+  const getDestName = (id: string) => dbDestinations.find((d) => d.id === id)?.name || id;
 
   // Analytics data
   const bookingsByMonth = bookings.reduce((acc: any[], b) => {
