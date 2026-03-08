@@ -3,9 +3,12 @@ import { ArrowLeft, Star, MapPin, Calendar, DollarSign, Heart, Check } from "luc
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { destinations, categoryLabels, categoryColors } from "@/data/destinations";
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { toast } from "sonner";
 import ReviewSection from "@/components/ReviewSection";
+import WeatherWidget from "@/components/WeatherWidget";
+
+const DestinationMap = lazy(() => import("@/components/DestinationMap"));
 
 const DestinationDetail = () => {
   const { slug } = useParams();
