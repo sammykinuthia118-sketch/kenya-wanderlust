@@ -3,7 +3,7 @@ import { Plus, Trash2, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { destinations } from "@/data/destinations";
+import { useDestinations } from "@/hooks/useDestinations";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -18,20 +18,31 @@ interface TripDay {
 
 const TripPlanner = () => {
   const { user } = useAuth();
+  const { data: destinations = [] } = useDestinations();
   const [tripName, setTripName] = useState("My Kenya Adventure");
   const [tripPlanId, setTripPlanId] = useState<string | null>(null);
-  const [days, setDays] = useState<TripDay[]>([
-    { id: "1", day: 1, destinationId: "7", notes: "Nairobi city tour and Giraffe Centre" },
-    { id: "2", day: 2, destinationId: "1", notes: "Full day safari in Maasai Mara" },
-    { id: "3", day: 3, destinationId: "2", notes: "Beach relaxation in Diani" },
-  ]);
+  const [days, setDays] = useState<TripDay[]>([]);
   const [saving, setSaving] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  // Set default days once destinations load
+  useEffect(() => {
+    if (destinations.length > 0 && !loaded && !user) {
+      const nairobi = destinations.find(d => d.slug === "nairobi");
+      const mara = destinations.find(d => d.slug === "maasai-mara");
+      const diani = destinations.find(d => d.slug === "diani-beach");
+      setDays([
+        { id: "1", day: 1, destinationId: nairobi?.id || destinations[0]?.id || "", notes: "City tour and Giraffe Centre" },
+        { id: "2", day: 2, destinationId: mara?.id || destinations[1]?.id || "", notes: "Full day safari" },
+        { id: "3", day: 3, destinationId: diani?.id || destinations[2]?.id || "", notes: "Beach relaxation" },
+      ]);
+      setLoaded(true);
+    }
+  }, [destinations, loaded, user]);
 
   // Load saved trip from DB if user is logged in
   useEffect(() => {
-    if (user) {
-      loadTrip();
-    }
+    if (user) loadTrip();
   }, [user]);
 
   const loadTrip = async () => {
@@ -62,6 +73,7 @@ const TripPlanner = () => {
           notes: d.notes || "",
         })));
       }
+      setLoaded(true);
     }
   };
 
@@ -128,7 +140,7 @@ const TripPlanner = () => {
 
   const totalCost = days.reduce((sum, d) => {
     const dest = destinations.find((dest) => dest.id === d.destinationId);
-    return sum + (dest?.priceFrom || 0);
+    return sum + (dest?.price_from || 0);
   }, 0);
 
   return (
@@ -209,7 +221,7 @@ const TripPlanner = () => {
                 {dest && (
                   <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
                     <MapPin className="h-3.5 w-3.5" />
-                    {dest.location} · From ${dest.priceFrom}/person
+                    {dest.location} · From ${dest.price_from}/person
                   </div>
                 )}
               </div>

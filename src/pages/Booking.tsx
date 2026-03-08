@@ -3,7 +3,7 @@ import { Calendar, Users, DollarSign, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { destinations } from "@/data/destinations";
+import { useDestinations } from "@/hooks/useDestinations";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -18,6 +18,7 @@ const tourTypes = [
 
 const Booking = () => {
   const { user } = useAuth();
+  const { data: destinations = [] } = useDestinations();
   const [destinationId, setDestinationId] = useState("");
   const [tourType, setTourType] = useState("");
   const [date, setDate] = useState("");
@@ -30,7 +31,7 @@ const Booking = () => {
   const dest = destinations.find((d) => d.id === destinationId);
   const tour = tourTypes.find((t) => t.value === tourType);
   const numTourists = parseInt(tourists) || 1;
-  const basePrice = dest?.priceFrom || 0;
+  const basePrice = dest?.price_from || 0;
   const totalPrice = Math.round(basePrice * (tour?.multiplier || 1) * numTourists);
 
   const handleSubmit = async (e: React.FormEvent) => {

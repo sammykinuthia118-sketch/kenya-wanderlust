@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Star, MapPin, Calendar, DollarSign, Heart, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { destinations, categoryLabels, categoryColors } from "@/data/destinations";
+import { useDestinationBySlug, categoryLabels, categoryColors, resolveImage } from "@/hooks/useDestinations";
 import { useState, lazy, Suspense } from "react";
 import { toast } from "sonner";
 import ReviewSection from "@/components/ReviewSection";
@@ -12,8 +12,16 @@ const DestinationMap = lazy(() => import("@/components/DestinationMap"));
 
 const DestinationDetail = () => {
   const { slug } = useParams();
-  const destination = destinations.find((d) => d.slug === slug);
+  const { data: destination, isLoading } = useDestinationBySlug(slug);
   const [saved, setSaved] = useState(false);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen pt-24 flex items-center justify-center">
+        <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   if (!destination) {
     return (
@@ -37,12 +45,12 @@ const DestinationDetail = () => {
     <div className="min-h-screen pt-16">
       {/* Hero Image */}
       <div className="relative h-[50vh] md:h-[60vh]">
-        <img src={destination.image} alt={destination.name} className="w-full h-full object-cover" />
+        <img src={resolveImage(destination.image_url)} alt={destination.name} className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
           <div className="container mx-auto">
-            <Badge className={`${categoryColors[destination.category]} mb-3`}>
-              {categoryLabels[destination.category]}
+            <Badge className={`${categoryColors[destination.category] || ""} mb-3`}>
+              {categoryLabels[destination.category] || destination.category}
             </Badge>
             <h1 className="font-display text-3xl md:text-5xl font-bold text-primary-foreground mb-2">
               {destination.name}
@@ -52,10 +60,7 @@ const DestinationDetail = () => {
                 <MapPin className="h-4 w-4" /> {destination.location}
               </div>
               <div className="flex items-center gap-1">
-                <Star className="h-4 w-4 fill-savanna text-savanna" /> {destination.rating} ({destination.reviewCount} reviews)
-              </div>
-              <div className="flex items-center gap-1">
-                <Calendar className="h-4 w-4" /> Best: {destination.bestTime}
+                <Calendar className="h-4 w-4" /> Best: {destination.best_time}
               </div>
             </div>
           </div>
@@ -76,7 +81,7 @@ const DestinationDetail = () => {
           </Button>
           <Link to="/booking">
             <Button size="sm" className="bg-gradient-safari">
-              <DollarSign className="mr-2 h-4 w-4" /> Book from ${destination.priceFrom}
+              <DollarSign className="mr-2 h-4 w-4" /> Book from ${destination.price_from}
             </Button>
           </Link>
         </div>
@@ -108,20 +113,20 @@ const DestinationDetail = () => {
             {/* Map */}
             <Suspense fallback={<div className="h-[300px] bg-muted rounded-xl animate-pulse" />}>
               <DestinationMap
-                lat={destination.coordinates.lat}
-                lng={destination.coordinates.lng}
+                lat={destination.lat}
+                lng={destination.lng}
                 name={destination.name}
                 location={destination.location}
               />
             </Suspense>
 
             {/* Weather */}
-            <WeatherWidget lat={destination.coordinates.lat} lng={destination.coordinates.lng} />
+            <WeatherWidget lat={destination.lat} lng={destination.lng} />
 
             <div className="bg-card border border-border rounded-xl p-6">
               <h3 className="font-display text-lg font-bold text-card-foreground mb-4">Travel Tips</h3>
               <ul className="space-y-3">
-                {destination.travelTips.map((tip) => (
+                {destination.travel_tips.map((tip) => (
                   <li key={tip} className="flex gap-2 text-sm text-muted-foreground">
                     <span className="text-primary mt-0.5">•</span>
                     {tip}
@@ -135,15 +140,11 @@ const DestinationDetail = () => {
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Best Time</span>
-                  <span className="font-medium text-card-foreground">{destination.bestTime}</span>
+                  <span className="font-medium text-card-foreground">{destination.best_time}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Starting Price</span>
-                  <span className="font-bold text-primary">${destination.priceFrom}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Rating</span>
-                  <span className="font-medium text-card-foreground">{destination.rating}/5</span>
+                  <span className="font-bold text-primary">${destination.price_from}</span>
                 </div>
               </div>
             </div>

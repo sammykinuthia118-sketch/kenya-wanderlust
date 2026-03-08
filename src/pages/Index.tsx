@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import DestinationCard from "@/components/DestinationCard";
-import { destinations } from "@/data/destinations";
+import { useDestinations } from "@/hooks/useDestinations";
 import heroImage from "@/assets/hero-savanna.jpg";
 
 const categories = [
@@ -16,7 +16,8 @@ const categories = [
 
 const Index = () => {
   const [search, setSearch] = useState("");
-  const featured = destinations.slice(0, 4);
+  const { data: destinations = [], isLoading } = useDestinations();
+  const featured = destinations.filter(d => d.is_featured).slice(0, 4);
 
   return (
     <div className="min-h-screen">
@@ -97,11 +98,17 @@ const Index = () => {
               View All <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featured.map((dest, i) => (
-              <DestinationCard key={dest.id} destination={dest} index={i} />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[1,2,3,4].map(i => <div key={i} className="h-80 bg-muted animate-pulse rounded-xl" />)}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {featured.map((dest, i) => (
+                <DestinationCard key={dest.id} destination={dest} index={i} />
+              ))}
+            </div>
+          )}
           <div className="mt-8 text-center md:hidden">
             <Link to="/explore">
               <Button variant="outline">View All Destinations</Button>
