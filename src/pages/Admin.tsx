@@ -94,6 +94,26 @@ const Admin = () => {
     setDestDialogOpen(true);
   };
 
+  const [uploading, setUploading] = useState(false);
+
+  const uploadImage = async (file: File): Promise<string | null> => {
+    setUploading(true);
+    const ext = file.name.split('.').pop();
+    const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    const { error } = await supabase.storage.from('destination-images').upload(fileName, file);
+    if (error) { toast.error("Upload failed: " + error.message); setUploading(false); return null; }
+    const { data: { publicUrl } } = supabase.storage.from('destination-images').getPublicUrl(fileName);
+    setUploading(false);
+    return publicUrl;
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const url = await uploadImage(file);
+    if (url) setDestForm(f => ({ ...f, image_url: url }));
+  };
+
   const saveDest = async () => {
     const payload = {
       name: destForm.name, slug: destForm.slug, tagline: destForm.tagline,
