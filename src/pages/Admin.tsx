@@ -415,7 +415,22 @@ const Admin = () => {
                           <div><Label>Longitude</Label><Input type="number" step="any" value={destForm.lng} onChange={e => setDestForm(f => ({ ...f, lng: Number(e.target.value) }))} /></div>
                         </div>
                         <div><Label>Best Time</Label><Input value={destForm.best_time} onChange={e => setDestForm(f => ({ ...f, best_time: e.target.value }))} /></div>
-                        <div><Label>Image URL</Label><Input value={destForm.image_url} onChange={e => setDestForm(f => ({ ...f, image_url: e.target.value }))} placeholder="https://..." /></div>
+                        <div>
+                          <Label>Image</Label>
+                          {destForm.image_url && (
+                            <img src={destForm.image_url} alt="Preview" className="w-full h-32 object-cover rounded-lg mb-2" />
+                          )}
+                          <div className="flex gap-2">
+                            <label className="flex-1">
+                              <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={uploading} />
+                              <div className="flex items-center justify-center gap-2 h-10 px-4 rounded-md border border-input bg-background text-sm cursor-pointer hover:bg-muted transition-colors">
+                                <Upload className="h-4 w-4" />
+                                {uploading ? "Uploading..." : "Upload Photo"}
+                              </div>
+                            </label>
+                          </div>
+                          <Input className="mt-2" value={destForm.image_url} onChange={e => setDestForm(f => ({ ...f, image_url: e.target.value }))} placeholder="Or paste image URL..." />
+                        </div>
                         <div><Label>Activities (comma separated)</Label><Input value={destForm.activities} onChange={e => setDestForm(f => ({ ...f, activities: e.target.value }))} /></div>
                         <div><Label>Travel Tips (comma separated)</Label><Input value={destForm.travel_tips} onChange={e => setDestForm(f => ({ ...f, travel_tips: e.target.value }))} /></div>
                         <div className="flex items-center gap-6">
