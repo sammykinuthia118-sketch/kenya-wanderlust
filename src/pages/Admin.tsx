@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { BarChart3, Users, Calendar, Star, Trash2, MapPin, FileText, LayoutDashboard, Plus, Pencil, ToggleLeft, ToggleRight, Upload, Database, Settings, Shield, UserPlus, UserMinus } from "lucide-react";
+import { BarChart3, Users, Calendar, Star, Trash2, MapPin, FileText, LayoutDashboard, Plus, Pencil, ToggleLeft, ToggleRight, Upload, Database, Settings, Shield, UserPlus, UserMinus, Mail, Send, Eye, Table2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
