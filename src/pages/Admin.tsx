@@ -146,8 +146,10 @@ const Admin = () => {
   };
 
   const saveDest = async () => {
+    const sanitizedSlug = destForm.slug.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    if (!sanitizedSlug) { toast.error("Please enter a valid name to generate a slug"); return; }
     const payload = {
-      name: destForm.name, slug: destForm.slug, tagline: destForm.tagline,
+      name: destForm.name.trim(), slug: sanitizedSlug, tagline: destForm.tagline,
       description: destForm.description, category: destForm.category, location: destForm.location,
       price_from: Number(destForm.price_from), best_time: destForm.best_time,
       lat: Number(destForm.lat), lng: Number(destForm.lng),
