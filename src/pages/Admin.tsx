@@ -581,62 +581,7 @@ const Admin = () => {
 
             {/* Database Tab */}
             {tab === "database" && (
-              <div className="space-y-6">
-                <div className="bg-card border border-border rounded-xl p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <Database className="h-6 w-6 text-primary" />
-                    <div>
-                      <h3 className="font-display font-semibold text-card-foreground">Connected Database</h3>
-                      <p className="text-sm text-muted-foreground">Lovable Cloud — PostgreSQL</p>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    <div className="bg-muted rounded-lg p-3">
-                      <p className="text-xs text-muted-foreground">Status</p>
-                      <p className="font-semibold text-accent text-sm">● Connected</p>
-                    </div>
-                    <div className="bg-muted rounded-lg p-3">
-                      <p className="text-xs text-muted-foreground">Engine</p>
-                      <p className="font-semibold text-card-foreground text-sm">PostgreSQL 15</p>
-                    </div>
-                    <div className="bg-muted rounded-lg p-3">
-                      <p className="text-xs text-muted-foreground">Storage Bucket</p>
-                      <p className="font-semibold text-card-foreground text-sm">destination-images (public)</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-card border border-border rounded-xl p-6">
-                  <h3 className="font-display font-semibold text-card-foreground mb-4">Table Statistics</h3>
-                  <div className="space-y-2">
-                    {dbStats.map(s => (
-                      <div key={s.table} className="flex items-center justify-between py-2.5 px-3 bg-muted rounded-lg">
-                        <span className="text-sm font-medium text-card-foreground capitalize">{s.table.replace(/_/g, ' ')}</span>
-                        <span className="text-sm font-bold text-primary">{s.count} rows</span>
-                      </div>
-                    ))}
-                    {dbStats.length === 0 && <p className="text-muted-foreground text-sm">Loading stats...</p>}
-                  </div>
-                </div>
-
-                <div className="bg-card border border-border rounded-xl p-6">
-                  <h3 className="font-display font-semibold text-card-foreground mb-4">Security</h3>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-sm">
-                      <Shield className="h-4 w-4 text-accent" />
-                      <span className="text-card-foreground">Row Level Security (RLS) enabled on all tables</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm">
-                      <Shield className="h-4 w-4 text-accent" />
-                      <span className="text-card-foreground">Authentication required for data modifications</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm">
-                      <Shield className="h-4 w-4 text-accent" />
-                      <span className="text-card-foreground">Admin role-based access control active</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <DatabaseManager dbStats={dbStats} onRefresh={fetchData} />
             )}
 
             {/* Settings Tab */}
