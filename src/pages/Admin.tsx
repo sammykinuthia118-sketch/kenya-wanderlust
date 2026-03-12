@@ -146,8 +146,10 @@ const Admin = () => {
   };
 
   const saveDest = async () => {
+    const sanitizedSlug = destForm.slug.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    if (!sanitizedSlug) { toast.error("Please enter a valid name to generate a slug"); return; }
     const payload = {
-      name: destForm.name, slug: destForm.slug, tagline: destForm.tagline,
+      name: destForm.name.trim(), slug: sanitizedSlug, tagline: destForm.tagline,
       description: destForm.description, category: destForm.category, location: destForm.location,
       price_from: Number(destForm.price_from), best_time: destForm.best_time,
       lat: Number(destForm.lat), lng: Number(destForm.lng),
@@ -485,8 +487,12 @@ const Admin = () => {
                       </DialogHeader>
                       <div className="space-y-3">
                         <div className="grid grid-cols-2 gap-3">
-                          <div><Label>Name</Label><Input value={destForm.name} onChange={e => setDestForm(f => ({ ...f, name: e.target.value }))} /></div>
-                          <div><Label>Slug</Label><Input value={destForm.slug} onChange={e => setDestForm(f => ({ ...f, slug: e.target.value }))} /></div>
+                          <div><Label>Name</Label><Input value={destForm.name} onChange={e => {
+                            const name = e.target.value;
+                            const autoSlug = name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                            setDestForm(f => ({ ...f, name, slug: editingDest ? f.slug : autoSlug }));
+                          }} /></div>
+                          <div><Label>Slug</Label><Input value={destForm.slug} onChange={e => setDestForm(f => ({ ...f, slug: e.target.value.toLowerCase().trim().replace(/[^a-z0-9-]+/g, '-') }))} placeholder="auto-generated-from-name" /></div>
                         </div>
                         <div><Label>Tagline</Label><Input value={destForm.tagline} onChange={e => setDestForm(f => ({ ...f, tagline: e.target.value }))} /></div>
                         <div><Label>Description</Label><Textarea value={destForm.description} onChange={e => setDestForm(f => ({ ...f, description: e.target.value }))} rows={3} /></div>
