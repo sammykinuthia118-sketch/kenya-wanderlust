@@ -392,24 +392,35 @@ const Admin = () => {
             {tab === "bookings" && (
               <div className="space-y-3">
                 {bookings.map(b => (
-                  <div key={b.id} className="bg-card border border-border rounded-xl p-5 flex flex-col md:flex-row md:items-center gap-4">
-                    <div className="flex-1">
-                      <p className="font-semibold text-card-foreground">{b.full_name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {getDestName(b.destination_id)} · {b.tour_type} · {b.num_tourists} tourists
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {new Date(b.booking_date).toLocaleDateString()} · ${b.total_price}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-                        b.status === "confirmed" ? "bg-accent/20 text-accent" :
-                        b.status === "cancelled" ? "bg-destructive/20 text-destructive" : "bg-muted text-muted-foreground"
-                      }`}>{b.status}</span>
-                      {b.status === "confirmed" && (
-                        <Button variant="outline" size="sm" onClick={() => updateBookingStatus(b.id, "cancelled")}>Cancel</Button>
-                      )}
+                  <div key={b.id} className="bg-card border border-border rounded-xl p-5 space-y-3">
+                    <div className="flex flex-col md:flex-row md:items-center gap-4">
+                      <div className="flex-1">
+                        <p className="font-semibold text-card-foreground">{b.full_name}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {getDestName(b.destination_id)} · {b.tour_type} · {b.num_tourists} tourists
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {new Date(b.booking_date).toLocaleDateString()} · ${b.total_price}
+                        </p>
+                        <div className="flex items-center gap-1.5 mt-1">
+                          <Mail className="h-3.5 w-3.5 text-primary" />
+                          <a href={`mailto:${b.email}`} className="text-sm text-primary hover:underline">{b.email}</a>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className={`text-xs px-2 py-1 rounded-full font-medium ${
+                          b.status === "confirmed" ? "bg-accent/20 text-accent" :
+                          b.status === "cancelled" ? "bg-destructive/20 text-destructive" : "bg-muted text-muted-foreground"
+                        }`}>{b.status}</span>
+                        <a href={`mailto:${b.email}?subject=Re: Your ${b.tour_type} booking to ${getDestName(b.destination_id)}&body=Dear ${b.full_name},%0D%0A%0D%0AThank you for your booking on ${new Date(b.booking_date).toLocaleDateString()}.%0D%0A%0D%0A`}>
+                          <Button variant="outline" size="sm">
+                            <Send className="h-3.5 w-3.5 mr-1" /> Reply
+                          </Button>
+                        </a>
+                        {b.status === "confirmed" && (
+                          <Button variant="outline" size="sm" onClick={() => updateBookingStatus(b.id, "cancelled")}>Cancel</Button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}
