@@ -12,6 +12,7 @@ import Explore from "./pages/Explore";
 import DestinationDetail from "./pages/DestinationDetail";
 import TripPlanner from "./pages/TripPlanner";
 import Booking from "./pages/Booking";
+import Accommodations from "./pages/Accommodations";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import Install from "./pages/Install";
