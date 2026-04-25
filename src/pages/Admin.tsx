@@ -16,7 +16,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from "recharts";
 
-type Tab = "overview" | "bookings" | "reviews" | "users" | "destinations" | "content" | "database" | "settings";
+type Tab = "overview" | "bookings" | "reviews" | "users" | "destinations" | "accommodations" | "content" | "database" | "settings";
 
 const TABS: { key: Tab; label: string; icon: any }[] = [
   { key: "overview", label: "Overview", icon: LayoutDashboard },
@@ -24,6 +24,7 @@ const TABS: { key: Tab; label: string; icon: any }[] = [
   { key: "reviews", label: "Reviews", icon: Star },
   { key: "users", label: "Users", icon: Users },
   { key: "destinations", label: "Destinations", icon: MapPin },
+  { key: "accommodations", label: "Accommodations", icon: Hotel },
   { key: "content", label: "Content", icon: FileText },
   { key: "database", label: "Database", icon: Database },
   { key: "settings", label: "Settings", icon: Settings },
