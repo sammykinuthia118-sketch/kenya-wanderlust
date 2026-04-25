@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { BarChart3, Users, Calendar, Star, Trash2, MapPin, FileText, LayoutDashboard, Plus, Pencil, ToggleLeft, ToggleRight, Upload, Database, Settings, Shield, UserPlus, UserMinus, Mail, Send, Eye, Table2 } from "lucide-react";
+import { BarChart3, Users, Calendar, Star, Trash2, MapPin, FileText, LayoutDashboard, Plus, Pencil, ToggleLeft, ToggleRight, Upload, Database, Settings, Shield, UserPlus, UserMinus, Mail, Send, Eye, Table2, Hotel } from "lucide-react";
+import AdminAccommodations from "@/components/admin/AdminAccommodations";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,7 +16,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from "recharts";
 
-type Tab = "overview" | "bookings" | "reviews" | "users" | "destinations" | "content" | "database" | "settings";
+type Tab = "overview" | "bookings" | "reviews" | "users" | "destinations" | "accommodations" | "content" | "database" | "settings";
 
 const TABS: { key: Tab; label: string; icon: any }[] = [
   { key: "overview", label: "Overview", icon: LayoutDashboard },
@@ -23,6 +24,7 @@ const TABS: { key: Tab; label: string; icon: any }[] = [
   { key: "reviews", label: "Reviews", icon: Star },
   { key: "users", label: "Users", icon: Users },
   { key: "destinations", label: "Destinations", icon: MapPin },
+  { key: "accommodations", label: "Accommodations", icon: Hotel },
   { key: "content", label: "Content", icon: FileText },
   { key: "database", label: "Database", icon: Database },
   { key: "settings", label: "Settings", icon: Settings },
@@ -573,6 +575,11 @@ const Admin = () => {
                 ))}
                 {dbDestinations.length === 0 && <p className="text-center text-muted-foreground py-8">No destinations in database yet.</p>}
               </div>
+            )}
+
+            {/* Accommodations Tab */}
+            {tab === "accommodations" && (
+              <AdminAccommodations destinations={dbDestinations} />
             )}
 
             {/* Content Tab */}

@@ -8,6 +8,7 @@ import { toast } from "sonner";
 const navLinks = [
   { to: "/", label: "Home" },
   { to: "/explore", label: "Explore Kenya" },
+  { to: "/accommodations", label: "Stays" },
   { to: "/trip-planner", label: "Trip Planner" },
   { to: "/booking", label: "Book a Tour" },
 ];
