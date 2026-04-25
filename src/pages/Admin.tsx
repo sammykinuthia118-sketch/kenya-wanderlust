@@ -577,6 +577,11 @@ const Admin = () => {
               </div>
             )}
 
+            {/* Accommodations Tab */}
+            {tab === "accommodations" && (
+              <AdminAccommodations destinations={dbDestinations} />
+            )}
+
             {/* Content Tab */}
             {tab === "content" && (
               <div className="space-y-6">
