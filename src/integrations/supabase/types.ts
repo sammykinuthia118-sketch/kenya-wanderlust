@@ -14,6 +14,77 @@ export type Database = {
   }
   public: {
     Tables: {
+      accommodations: {
+        Row: {
+          amenities: string[]
+          category: string
+          created_at: string
+          currency: string
+          description: string
+          destination_id: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean
+          is_featured: boolean
+          location: string
+          name: string
+          partner_hotel: string
+          price_per_night: number
+          rating: number
+          room_types: string[]
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          amenities?: string[]
+          category?: string
+          created_at?: string
+          currency?: string
+          description?: string
+          destination_id?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          is_featured?: boolean
+          location?: string
+          name: string
+          partner_hotel?: string
+          price_per_night?: number
+          rating?: number
+          room_types?: string[]
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          amenities?: string[]
+          category?: string
+          created_at?: string
+          currency?: string
+          description?: string
+          destination_id?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          is_featured?: boolean
+          location?: string
+          name?: string
+          partner_hotel?: string
+          price_per_night?: number
+          rating?: number
+          room_types?: string[]
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "accommodations_destination_id_fkey"
+            columns: ["destination_id"]
+            isOneToOne: false
+            referencedRelation: "destinations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       bookings: {
         Row: {
           booking_date: string
