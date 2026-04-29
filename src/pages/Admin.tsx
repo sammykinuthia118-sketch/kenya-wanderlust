@@ -114,6 +114,14 @@ const Admin = () => {
     else { toast.success(`Booking ${status}`); fetchData(); }
   };
 
+  const updateStayBookingStatus = async (id: string, status: string) => {
+    const { error } = await supabase.from("accommodation_bookings" as any).update({ status }).eq("id", id);
+    if (error) toast.error(error.message);
+    else { toast.success(`Stay ${status}`); fetchData(); }
+  };
+
+  const getAccomName = (id: string) => accommodationsList.find((a) => a.id === id)?.name || "Accommodation";
+
   // Destination CRUD
   const openNewDest = () => {
     setEditingDest(null);
