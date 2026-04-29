@@ -172,8 +172,8 @@ const Accommodations = () => {
                         <span className="text-xs text-muted-foreground font-normal ml-1">/ night</span>
                       </p>
                     </div>
-                    <Link to="/booking">
-                      <Button size="sm" className="bg-gradient-safari">Book</Button>
+                    <Link to={`/accommodations/book?accommodation=${a.id}`}>
+                      <Button size="sm" className="bg-gradient-safari">Book Stay</Button>
                     </Link>
                   </div>
                 </div>
