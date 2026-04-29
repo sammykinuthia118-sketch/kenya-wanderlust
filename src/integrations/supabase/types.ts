@@ -14,6 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
+      accommodation_bookings: {
+        Row: {
+          accommodation_id: string
+          check_in: string
+          check_out: string
+          created_at: string
+          currency: string
+          email: string
+          full_name: string
+          id: string
+          num_guests: number
+          num_rooms: number
+          phone: string | null
+          room_type: string | null
+          special_requests: string | null
+          status: string
+          total_price: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          accommodation_id: string
+          check_in: string
+          check_out: string
+          created_at?: string
+          currency?: string
+          email: string
+          full_name: string
+          id?: string
+          num_guests?: number
+          num_rooms?: number
+          phone?: string | null
+          room_type?: string | null
+          special_requests?: string | null
+          status?: string
+          total_price?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          accommodation_id?: string
+          check_in?: string
+          check_out?: string
+          created_at?: string
+          currency?: string
+          email?: string
+          full_name?: string
+          id?: string
+          num_guests?: number
+          num_rooms?: number
+          phone?: string | null
+          room_type?: string | null
+          special_requests?: string | null
+          status?: string
+          total_price?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       accommodations: {
         Row: {
           amenities: string[]

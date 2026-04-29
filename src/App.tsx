@@ -13,6 +13,7 @@ import DestinationDetail from "./pages/DestinationDetail";
 import TripPlanner from "./pages/TripPlanner";
 import Booking from "./pages/Booking";
 import Accommodations from "./pages/Accommodations";
+import AccommodationBooking from "./pages/AccommodationBooking";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import Install from "./pages/Install";
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/trip-planner" element={<TripPlanner />} />
             <Route path="/booking" element={<Booking />} />
             <Route path="/accommodations" element={<Accommodations />} />
+            <Route path="/accommodations/book" element={<AccommodationBooking />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/install" element={<Install />} />
