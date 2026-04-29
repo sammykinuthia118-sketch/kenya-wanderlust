@@ -35,6 +35,8 @@ const CHART_COLORS = ["hsl(24,80%,50%)", "hsl(195,70%,45%)", "hsl(145,40%,40%)",
 const Admin = () => {
   const { user, isAdmin, loading } = useAuth();
   const [bookings, setBookings] = useState<any[]>([]);
+  const [stayBookings, setStayBookings] = useState<any[]>([]);
+  const [accommodationsList, setAccommodationsList] = useState<any[]>([]);
   const [reviews, setReviews] = useState<any[]>([]);
   const [profiles, setProfiles] = useState<any[]>([]);
   const [dbDestinations, setDbDestinations] = useState<any[]>([]);
@@ -61,18 +63,22 @@ const Admin = () => {
   }, [isAdmin]);
 
   const fetchData = async () => {
-    const [b, r, p, d, c] = await Promise.all([
+    const [b, r, p, d, c, sb, ac] = await Promise.all([
       supabase.from("bookings").select("*").order("created_at", { ascending: false }),
       supabase.from("reviews").select("*").order("created_at", { ascending: false }),
       supabase.from("profiles").select("*").order("created_at", { ascending: false }),
       supabase.from("destinations").select("*").order("created_at", { ascending: false }),
       supabase.from("site_content").select("*").order("key"),
+      supabase.from("accommodation_bookings" as any).select("*").order("created_at", { ascending: false }),
+      supabase.from("accommodations" as any).select("id,name,partner_hotel,location"),
     ]);
     if (b.data) setBookings(b.data);
     if (r.data) setReviews(r.data);
     if (p.data) setProfiles(p.data);
     if (d.data) setDbDestinations(d.data);
     if (c.data) setSiteContent(c.data);
+    if (sb.data) setStayBookings(sb.data as any[]);
+    if (ac.data) setAccommodationsList(ac.data as any[]);
 
     // Fetch admin users
     const { data: roles } = await supabase.from("user_roles").select("*").eq("role", "admin");
