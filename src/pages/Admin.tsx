@@ -16,11 +16,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from "recharts";
 
-type Tab = "overview" | "bookings" | "reviews" | "users" | "destinations" | "accommodations" | "content" | "database" | "settings";
+type Tab = "overview" | "tour_bookings" | "stay_bookings" | "reviews" | "users" | "destinations" | "accommodations" | "content" | "database" | "settings";
 
 const TABS: { key: Tab; label: string; icon: any }[] = [
   { key: "overview", label: "Overview", icon: LayoutDashboard },
-  { key: "bookings", label: "Bookings", icon: Calendar },
+  { key: "tour_bookings", label: "Tour Bookings", icon: Calendar },
+  { key: "stay_bookings", label: "Stay Bookings", icon: Hotel },
   { key: "reviews", label: "Reviews", icon: Star },
   { key: "users", label: "Users", icon: Users },
   { key: "destinations", label: "Destinations", icon: MapPin },
@@ -406,10 +407,9 @@ const Admin = () => {
               </div>
             )}
 
-            {/* Bookings Tab */}
-            {tab === "bookings" && (
+            {/* Tour Bookings Tab */}
+            {tab === "tour_bookings" && (
               <div className="space-y-8">
-                {/* Tour Bookings */}
                 <section>
                   <h2 className="font-display text-xl font-bold text-foreground mb-3 flex items-center gap-2">
                     <Calendar className="h-5 w-5 text-primary" /> Tour Bookings
@@ -452,8 +452,12 @@ const Admin = () => {
                     {bookings.length === 0 && <p className="text-center text-muted-foreground py-8 bg-card border border-border rounded-xl">No tour bookings yet.</p>}
                   </div>
                 </section>
+              </div>
+            )}
 
-                {/* Accommodation Bookings */}
+            {/* Stay Bookings Tab */}
+            {tab === "stay_bookings" && (
+              <div className="space-y-8">
                 <section>
                   <h2 className="font-display text-xl font-bold text-foreground mb-3 flex items-center gap-2">
                     <Hotel className="h-5 w-5 text-primary" /> Accommodation Bookings
